@@ -19,7 +19,6 @@ import { callUploadTrack } from '../utils/UploadTrack';
 import { getAllTracks } from '../utils/GetAllTracks';
 import SoundPlayer from 'react-native-sound-player';
 import { toggleLikeTrack } from '../utils/ToggleLikeTrack';
-import { getLikedTracks } from '../utils/GetLikedTracks';
 import SongList from '../components/songList';
 import { getUserPlaylists } from '../utils/GetUserPlaylists';
 import { addTrackToPlaylist } from '../utils/AddTrackToPlaylist';
@@ -35,7 +34,6 @@ const MyMusicList = () => {
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [liked, setLiked] = useState([]);
   const [list, setList] = useState([]);
   const [trackId, setTrackId] = useState('');
 
