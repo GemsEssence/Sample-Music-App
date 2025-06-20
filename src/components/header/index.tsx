@@ -1,19 +1,20 @@
-import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import React from 'react';
 
-interface propsType {
-  lable?: string;
+interface PropsType {
+  label?: string;
   onPressBack?: () => void;
   isShowBack?: boolean;
-  isShowRighIcon?: boolean;
+  isShowRightIcon?: boolean;
   onPressRight?: () => void;
 }
 
-const Header: React.FC<propsType> = ({
-  lable = '',
+const Header: React.FC<PropsType> = ({
+  label = '',
   onPressBack,
   isShowBack = true,
-  isShowRighIcon = false,
-  onPressRight
+  isShowRightIcon = false,
+  onPressRight,
 }) => {
   return (
     <View style={styles.container}>
@@ -21,24 +22,26 @@ const Header: React.FC<propsType> = ({
         <Pressable onPress={onPressBack}>
           <Image
             source={require('../../assest/images/back.png')}
-            style={styles.backImage}
-            tintColor={'#000'}
+            style={styles.icon}
+            tintColor="#000"
           />
         </Pressable>
       ) : (
-        <View style={styles.rightView} />
+        <View style={styles.placeholder} />
       )}
-      <Text style={styles.title}>{lable}</Text>
-      {isShowRighIcon ? (
+
+      <Text style={styles.title}>{label}</Text>
+
+      {isShowRightIcon ? (
         <Pressable onPress={onPressRight}>
           <Image
             source={require('../../assest/images/upload.png')}
-            style={styles.backImage}
-            tintColor={'#000'}
+            style={styles.icon}
+            tintColor="#000"
           />
         </Pressable>
       ) : (
-        <View style={styles.rightView} />
+        <View style={styles.placeholder} />
       )}
     </View>
   );
@@ -49,22 +52,22 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
-    alignItems: 'center',
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   title: {
-    fontSize: 25,
-    marginBottom: 10,
-    textAlign: 'center',
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#000',
+    textAlign: 'center',
+    flex: 1,
   },
-  backImage: {
+  icon: {
     height: 30,
     width: 30,
   },
-  rightView: {
+  placeholder: {
     height: 30,
     width: 30,
   },

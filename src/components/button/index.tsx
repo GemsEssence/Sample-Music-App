@@ -5,12 +5,12 @@ import {
 } from 'react-native';
 
 interface propsType {
-    lable?: string;
+    label?: string;
     onPressButton?: () => void;
 }
 
 const Button: React.FC<propsType> = ({
-    lable = '',
+    label = '',
     onPressButton,
 }) => {
     return (
@@ -21,7 +21,7 @@ const Button: React.FC<propsType> = ({
         >
             <Text
                 style={styles.title}
-            >{lable}</Text>
+            >{label}</Text>
         </Pressable>
 
     );

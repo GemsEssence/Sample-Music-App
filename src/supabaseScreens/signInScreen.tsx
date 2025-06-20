@@ -53,19 +53,19 @@ export default function SignInScreenSupabase() {
 
   return (
     <SafeAreaView style={styles.mainView}>
-      <Header isShowBack={false} lable={'SignIn'} />
+      <Header isShowBack={false} label={'SignIn'} />
       <InputBox
         placeholder="Enter Email"
         onChangeText={val => setEmail(val)}
-        lable="Email Address"
+        label="Email Address"
       />
       <InputBox
         placeholder="Enter Password"
         secureTextEntry
         onChangeText={setPassword}
-        lable="password"
+        label="password"
       />
-      <Button lable="SignIn" onPressButton={handleSignIn} />
+      <Button label="SignIn" onPressButton={handleSignIn} />
 
       <Pressable
         disabled

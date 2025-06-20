@@ -9,27 +9,33 @@ import {
   Platform,
   StatusBar,
   Modal,
+  Alert,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from '../components/header';
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { supabase } from '../../lib/supabase';
-import { getCurrentUser } from '../utils/GetCurrentUser';
-import { callUploadTrack } from '../utils/UploadTrack';
-import { getAllTracks } from '../utils/GetAllTracks';
+import {
+  CommonActions,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
+import {supabase} from '../../lib/supabase';
+import {getCurrentUser} from '../utils/GetCurrentUser';
+import {callUploadTrack} from '../utils/UploadTrack';
+import {getAllTracks} from '../utils/GetAllTracks';
 import SoundPlayer from 'react-native-sound-player';
-import { toggleLikeTrack } from '../utils/ToggleLikeTrack';
+import {toggleLikeTrack} from '../utils/ToggleLikeTrack';
 import SongList from '../components/songList';
-import { getUserPlaylists } from '../utils/GetUserPlaylists';
-import { addTrackToPlaylist } from '../utils/AddTrackToPlaylist';
+import {getUserPlaylists} from '../utils/GetUserPlaylists';
+import {addTrackToPlaylist} from '../utils/AddTrackToPlaylist';
 import BottomPlayr from '../components/bottomPlayer';
-import { usePlayer } from '../context/playerContext';
+import {usePlayer} from '../context/playerContext';
 
 const statusBarHeight = Platform.OS === 'android' ? StatusBar.currentHeight : 0;
 
 const MyMusicList = () => {
   const navigation = useNavigation();
-  const { currentTrack, isPlaying, playTrack, togglePlayPause } = usePlayer();
+  const {currentTrack, isPlaying, playTrack, togglePlayPause} = usePlayer();
+  const isFocus = useIsFocused();
   const [user, setUser] = useState({});
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -39,9 +45,11 @@ const MyMusicList = () => {
 
   useEffect(() => {
     fetchTracks();
-    fetchPlaylist();
+    if (isFocus) {
+      fetchPlaylist();
+    }
     return () => setTracks([]);
-  }, []);
+  }, [isFocus]);
 
   const fetchPlaylist = async () => {
     setLoading(true);
@@ -60,20 +68,31 @@ const MyMusicList = () => {
     const result = await getAllTracks();
     if (result.success) {
       const data = result?.tracks;
-      const temp = data.map(val => ({ ...val, isPlaying: false }));
+      const temp = data.map(val => ({...val, isPlaying: false}));
       setTracks([...temp]);
     }
     setLoading(false);
   };
 
   const addToPlaylist = id => {
-    setTrackId(id);
-    setModalVisible(true);
+    if (list?.length) {
+      setTrackId(id);
+      setModalVisible(true);
+    } else {
+      Alert.alert('No PlayList Found', 'Create New.', [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => navigation.navigate('PlaylistScreen')},
+      ]);
+    }
   };
 
   const onPressPlaylistName = async playlistId => {
     setLoading(true);
-    const { success } = await addTrackToPlaylist(playlistId, trackId);
+    const {success} = await addTrackToPlaylist(playlistId, trackId);
     if (success) {
       setModalVisible(false);
     }
@@ -88,7 +107,7 @@ const MyMusicList = () => {
   const upload = async () => {
     setLoading(true);
     SoundPlayer.stop();
-    const { data, error } = await supabase.auth.getUser();
+    const {data, error} = await supabase.auth.getUser();
     if (error) {
       console.error('Error fetching user:', error);
       return;
@@ -102,11 +121,11 @@ const MyMusicList = () => {
 
   const onPressLike = async trackId => {
     try {
-      const { liked } = await toggleLikeTrack(trackId);
+      const {liked} = await toggleLikeTrack(trackId);
       setTracks(prev =>
         prev.map(track =>
-          track.id === trackId ? { ...track, isLiked: liked } : track
-        )
+          track.id === trackId ? {...track, isLiked: liked} : track,
+        ),
       );
     } catch (err) {
       console.error('Failed to like/unlike track:', err);
@@ -114,15 +133,15 @@ const MyMusicList = () => {
   };
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
+    const {error} = await supabase.auth.signOut();
     if (error) {
       console.error('Logout error:', error.message);
     } else {
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [{ name: 'SignInScreenSupabase' }],
-        })
+          routes: [{name: 'SignInScreenSupabase'}],
+        }),
       );
     }
   };
@@ -130,16 +149,16 @@ const MyMusicList = () => {
   return (
     <SafeAreaView style={styles.mainView}>
       <Header
-        lable="My Music"
+        label="My Music"
         isShowBack={false}
-        isShowRighIcon
+        isShowRightIcon
         onPressRight={upload}
       />
 
       <FlatList
         data={tracks}
         keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <SongList
             onPressAdd={addToPlaylist}
             item={item}
@@ -178,7 +197,7 @@ const MyMusicList = () => {
             <FlatList
               data={list}
               keyExtractor={(_, index) => index.toString()}
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <Pressable
                   onPress={() => onPressPlaylistName(item?.id)}
                   style={styles.playlistItem}>

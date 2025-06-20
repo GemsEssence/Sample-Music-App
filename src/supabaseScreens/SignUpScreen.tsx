@@ -41,19 +41,19 @@ export default function SignUpScreenSupabase() {
 
   return (
     <SafeAreaView style={styles.mainView}>
-      <Header onPressBack={goBack} lable={'SignUp'} />
+      <Header onPressBack={goBack} label={'SignUp'} />
       <InputBox
         placeholder="Enter Email"
         onChangeText={val => setEmail(val)}
-        lable="Email Address"
+        label="Email Address"
       />
       <InputBox
         placeholder="Enter Password"
         secureTextEntry
         onChangeText={setPassword}
-        lable="password"
+        label="password"
       />
-      <Button lable="Sign Up" onPressButton={handleSignUp} />
+      <Button label="Sign Up" onPressButton={handleSignUp} />
       {loading && <ActivityIndicator size="large" color="#007bff" />}
     </SafeAreaView>
   );

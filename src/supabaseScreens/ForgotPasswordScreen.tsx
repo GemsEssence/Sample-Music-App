@@ -63,21 +63,21 @@ export default function ForgotPasswordScreenSupabase() {
 
   return (
     <SafeAreaView style={styles.mainView}>
-      <Header lable={'Forgot Password'} onPressBack={goBack} />
+      <Header label={'Forgot Password'} onPressBack={goBack} />
       <InputBox
         placeholder="Enter Email"
         onChangeText={val => setEmail(val)}
-        lable="Email Address"
+        label="Email Address"
       />
-      <Button lable="Reset Password" onPressButton={handleSendOtp} />
+      <Button label="Reset Password" onPressButton={handleSendOtp} />
 
       <InputBox
         placeholder="Enter OPT"
         onChangeText={val => setOtp(val)}
-        lable="OTP"
+        label="OTP"
       />
 
-      <Button lable="Reset Password" onPressButton={handleVerifyOtp} />
+      <Button label="Reset Password" onPressButton={handleVerifyOtp} />
 
       {loading && <ActivityIndicator size="large" color="#007bff" />}
     </SafeAreaView>

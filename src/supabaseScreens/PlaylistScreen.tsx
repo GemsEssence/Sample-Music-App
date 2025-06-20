@@ -87,8 +87,10 @@ const PlaylistScreen = () => {
 
   const renderItem = ({item}) => (
     <View>
-      <Pressable style={styles.playlistHeader} onPress={() => onPressPlaylist(item?.id)}>
-        <Text style={styles.playlistTitle}>{item?.name}</Text>
+      <Pressable
+        style={styles.playlistHeader}
+        onPress={() => onPressPlaylist(item?.id)}>
+        <Text style={styles.playlistTitle}>{`${item?.name} >`}</Text>
       </Pressable>
       {item?.isOpen && (
         <FlatList
@@ -110,12 +112,14 @@ const PlaylistScreen = () => {
   return (
     <SafeAreaView style={styles.mainView}>
       <Header
-        lable="My Playlist"
+        label="My Playlist"
         isShowBack
-        isShowRighIcon={false}
+        isShowRightIcon={false}
         onPressBack={() => navigation.goBack()}
       />
-      <Pressable style={styles.createPlaylistBtn} onPress={() => setModalVisible(true)}>
+      <Pressable
+        style={styles.createPlaylistBtn}
+        onPress={() => setModalVisible(true)}>
         <Text style={styles.createPlaylistText}>+ Create Playlist</Text>
       </Pressable>
       {renderItem({item: favourite})}
@@ -141,9 +145,9 @@ const PlaylistScreen = () => {
             <InputBox
               placeholder="Enter Name"
               onChangeText={setPlaylistName}
-              lable="Playlist Name"
+              label="Playlist Name"
             />
-            <Button lable="Create" onPressButton={handleCreate} />
+            <Button label="Create" onPressButton={handleCreate} />
           </View>
         </View>
       </Modal>

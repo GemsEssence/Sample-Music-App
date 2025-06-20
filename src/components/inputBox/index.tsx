@@ -11,7 +11,7 @@ interface propsType {
     value?: string;
     onChangeText?: (val:string) => void;
     secureTextEntry?: boolean;
-    lable?: string;
+    label?: string;
 }
 
 const InputBox: React.FC<propsType> = ({
@@ -19,11 +19,11 @@ const InputBox: React.FC<propsType> = ({
     value,
     onChangeText,
     secureTextEntry = false,
-    lable = ''
+    label = ''
 }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{lable}</Text>
+            <Text style={styles.title}>{label}</Text>
             <TextInput
                 style={styles.input}
                 placeholder={placeholder}
